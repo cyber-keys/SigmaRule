@@ -1,0 +1,28 @@
+title: Lolbas - Windows Finger.exe
+description: Detects suspicious activities when Finger.exe (legitimate Windows binary) is used for file downloads, or attempts to communicate with C2 channels.
+references:
+    - http://hyp3rlinx.altervista.org/advisories/Windows_TCPIP_Finger_Command_C2_Channel_and_Bypassing_Security_Software.txt
+    - https://www.bleepingcomputer.com/news/security/windows-10-finger-command-can-be-abused-to-download-or-steal-files/
+    - https://hackunagi.medium.com/astaroth-guildma-the-latam-trojan-with-several-faces-1e350806223e
+    - https://attack.mitre.org/techniques/T1218/
+tags:
+    - attack.defense_evasion
+    - attack.Signed Binary Proxy Execution
+    - attack.T1218
+    - MitreLink: https://attack.mitre.org/techniques/T1218/
+status: experimental
+author: Keilly Santos
+date: 2021/02/08
+modified: 2021/02/08
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventID: 1
+	Image | endswith: finger.exe
+	CommandLine | contain: *@*
+    condition: selection
+falsepositives:
+    - unknown
+level: high
